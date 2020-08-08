@@ -1,3 +1,3 @@
 # graphql-filter
 
-A GraphQL middleware to filter objects in the array of outputs.
+A GraphQL middleware to filter output data.

@@ -1,7 +1,7 @@
 {
   "name": "graphql-filter",
   "version": "0.0.0",
-  "description": "A GraphQL middleware to filter objects in the array of outputs. ",
+  "description": "A GraphQL middleware to filter output data. ",
   "keywords": [
     "graphql",
     "filter",
