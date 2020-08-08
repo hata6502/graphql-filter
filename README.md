@@ -36,7 +36,7 @@ and [snapshots](https://github.com/hata6502/graphql-filter/blob/master/dist/__sn
 ## Install
 
 ```sh
-yarn add graphql-filter
+yarn add graphql-filter graphql-middleware
 ```
 
 ## Run tests
