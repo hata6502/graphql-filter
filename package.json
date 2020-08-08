@@ -7,17 +7,24 @@
     "filter",
     "middleware"
   ],
-  "repository": "https://github.com/blue-hood/graphql-filter",
+  "repository": "https://github.com/hata6502/graphql-filter",
   "license": "MIT",
-  "author": "Hood <hato6502@gmail.com>",
+  "author": "hata6502",
   "main": "dist/index.js",
   "scripts": {
+    "codegen": "graphql-codegen --config codegen.yml",
     "fix": "prettier --write .",
     "generate-disclaimer": "yarn licenses generate-disclaimer --ignore-platform > DISCLAIMER.md",
     "license-checker": "license-checker --excludePackages 'css-select@1.2.0;dictionary-en@3.0.0;domutils@1.5.1;optimist@0.6.1;tiny-segmenter@0.2.0;trim@0.0.1;union@0.5.0;unorm@1.6.0;zlibjs@0.2.0' --excludePrivatePackages --onlyAllow 'Apache-2.0;BSD;BSD-2-Clause;BSD-3-Clause;CC0-1.0;CC-BY-3.0;CC-BY-4.0;ISC;MIT;Public Domain;Unlicense;WTFPL' --production --unknown > /dev/null",
     "tsc": "tsc"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.17.7",
+    "@graphql-codegen/introspection": "1.17.7",
+    "@graphql-codegen/typescript": "1.17.7",
+    "@graphql-codegen/typescript-resolvers": "1.17.7",
+    "apollo-server": "^2.16.1",
+    "graphql": "^15.3.0",
     "license-checker": "^25.0.1",
     "prettier": "^2.0.5",
     "typescript": "^3.9.6"
