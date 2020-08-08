@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`graphql-filter should filter books 1`] = `
+exports[`filter books 1`] = `
 Object {
   "data": Object {
     "books": Array [
@@ -20,14 +20,15 @@ Object {
 }
 `;
 
-exports[`graphql-filter should filter nullableBook 1`] = `
+exports[`filter nullableBook 1`] = `
 Object {
   "data": Object {
-    "nullableBook1": Object {
+    "book1": Object {
       "id": "1",
       "private": false,
     },
-    "nullableBook2": null,
+    "book2": null,
+    "notExistedBook": null,
   },
   "errors": undefined,
   "extensions": undefined,
@@ -39,7 +40,7 @@ Object {
 }
 `;
 
-exports[`graphql-filter should filter nullableBooks 1`] = `
+exports[`filter nullableBooks 1`] = `
 Object {
   "data": Object {
     "nullableBooks": Array [
@@ -47,6 +48,7 @@ Object {
         "id": "1",
         "private": false,
       },
+      null,
       null,
     ],
   },

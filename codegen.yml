@@ -1,0 +1,9 @@
+overwrite: true
+schema: './src/index.test.ts'
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-resolvers'
+    config:
+      useIndexSignature: true
