@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`graphql-filter should filter book 1`] = `
+Object {
+  "data": Object {
+    "book": Object {
+      "title": "title",
+    },
+  },
+  "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`graphql-filter should filter books 1`] = `
+Object {
+  "data": Object {
+    "books": Array [
+      null,
+    ],
+  },
+  "errors": Array [
+    [GraphQLError: Cannot return null for non-nullable field Book.title.],
+  ],
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
