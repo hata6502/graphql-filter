@@ -11,13 +11,16 @@ const typeDefs = apollo_server_1.gql `
     books: [Book!]!
   }
 `;
+const queryResolvers = {
+    books: () => [
+        {
+            title: 'title',
+            author: 'author',
+        },
+    ],
+};
 const resolvers = {
-    Query: {
-        books: () => [{
-                title: 'title',
-                author: 'author'
-            }],
-    },
+    Query: queryResolvers,
 };
 const server = new apollo_server_1.ApolloServer({ typeDefs, resolvers });
 server.listen().then(({ url }) => {
