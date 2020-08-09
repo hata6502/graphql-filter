@@ -5,6 +5,8 @@ import graphQLFilter from '.';
 import type { GraphQLFilterFunction, GraphQLFilterMap } from '.';
 import type { Book, Resolvers } from './generated/graphql';
 
+const numberOfBooks = 1000;
+
 const typeDefs = gql`
   type Book {
     id: ID!
@@ -13,27 +15,24 @@ const typeDefs = gql`
 
   type Query {
     books: [Book!]!
+    manyBooks: [Book!]!
     nullableBook(id: ID!): Book
     nullableBooks: [Book]!
   }
 `;
 
-const books: Book[] = [
-  {
-    id: '1',
-    private: false,
-  },
-  {
-    id: '2',
-    private: true,
-  },
-];
+const manyBooks: Book[] = [...Array(numberOfBooks).keys()].map((index) => ({
+  id: String(index + 1),
+  private: index % 2 === 1 ? true : false,
+}));
 
 const resolvers: Resolvers = {
   Query: {
-    books: () => books,
-    nullableBook: (_, { id }) => books.find((book) => book.id === id) || null,
-    nullableBooks: () => [...books, null],
+    books: () => manyBooks.slice(0, 2),
+    manyBooks: () => manyBooks,
+    nullableBook: (_, { id }) =>
+      manyBooks.find((book) => book.id === id) || null,
+    nullableBooks: () => [...manyBooks.slice(0, 2), null],
   },
 };
 
@@ -126,3 +125,15 @@ test('filter nullableBooks', async () => {
 
   expect(response).toMatchSnapshot();
 });
+
+test(`performance test with ${numberOfBooks} books`, async () =>
+  query({
+    query: gql`
+      query {
+        manyBooks {
+          id
+          private
+        }
+      }
+    `,
+  }));

@@ -26,6 +26,7 @@ export declare type Book = {
 export declare type Query = {
     __typename?: 'Query';
     books: Array<Book>;
+    manyBooks: Array<Book>;
     nullableBook?: Maybe<Book>;
     nullableBooks: Array<Maybe<Book>>;
 };
@@ -89,6 +90,7 @@ export declare type BookResolvers<ContextType = any, ParentType extends Resolver
 }>;
 export declare type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
     books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
+    manyBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
     nullableBook?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryNullableBookArgs, 'id'>>;
     nullableBooks?: Resolver<Array<Maybe<ResolversTypes['Book']>>, ParentType, ContextType>;
 }>;

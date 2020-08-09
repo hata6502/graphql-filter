@@ -4,6 +4,7 @@ const apollo_server_1 = require("apollo-server");
 const apollo_server_testing_1 = require("apollo-server-testing");
 const graphql_middleware_1 = require("graphql-middleware");
 const _1 = require(".");
+const numberOfBooks = 1000;
 const typeDefs = apollo_server_1.gql `
   type Book {
     id: ID!
@@ -12,25 +13,21 @@ const typeDefs = apollo_server_1.gql `
 
   type Query {
     books: [Book!]!
+    manyBooks: [Book!]!
     nullableBook(id: ID!): Book
     nullableBooks: [Book]!
   }
 `;
-const books = [
-    {
-        id: '1',
-        private: false,
-    },
-    {
-        id: '2',
-        private: true,
-    },
-];
+const manyBooks = [...Array(numberOfBooks).keys()].map(index => ({
+    id: String(index + 1),
+    private: index % 2 === 1 ? true : false,
+}));
 const resolvers = {
     Query: {
-        books: () => books,
-        nullableBook: (_, { id }) => books.find((book) => book.id === id) || null,
-        nullableBooks: () => [...books, null],
+        books: () => manyBooks.slice(0, 2),
+        manyBooks: () => manyBooks,
+        nullableBook: (_, { id }) => manyBooks.find((book) => book.id === id) || null,
+        nullableBooks: () => [...manyBooks.slice(0, 2), null],
     },
 };
 const bookFilterFunction = ({ result }) => result ? !result.private : false;
@@ -108,4 +105,14 @@ test('filter nullableBooks', async () => {
     });
     expect(response).toMatchSnapshot();
 });
+test(`performance test with ${numberOfBooks} books`, async () => query({
+    query: apollo_server_1.gql `
+      query {
+        manyBooks {
+          id
+          private
+        }
+      }
+    `,
+}));
 //# sourceMappingURL=index.test.js.map
