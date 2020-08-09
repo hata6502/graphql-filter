@@ -25,16 +25,17 @@ export declare type Book = {
 };
 export declare type Query = {
     __typename?: 'Query';
-    book: Book;
-    books: Array<Book>;
-    manyBooks: Array<Book>;
     nullableBook?: Maybe<Book>;
-    nullableBooks: Array<Maybe<Book>>;
-};
-export declare type QueryBookArgs = {
-    id: Scalars['ID'];
+    book: Book;
+    nullableBooks?: Maybe<Array<Maybe<Book>>>;
+    books?: Maybe<Array<Book>>;
+    strictBooks: Array<Book>;
+    manyBooks?: Maybe<Array<Book>>;
 };
 export declare type QueryNullableBookArgs = {
+    id: Scalars['ID'];
+};
+export declare type QueryBookArgs = {
     id: Scalars['ID'];
 };
 export declare type WithIndex<TObject> = TObject & Record<string, any>;
@@ -93,11 +94,12 @@ export declare type BookResolvers<ContextType = any, ParentType extends Resolver
     __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 }>;
 export declare type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-    book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
-    books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
-    manyBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
     nullableBook?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryNullableBookArgs, 'id'>>;
-    nullableBooks?: Resolver<Array<Maybe<ResolversTypes['Book']>>, ParentType, ContextType>;
+    book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
+    nullableBooks?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
+    books?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
+    strictBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
+    manyBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
 }>;
 export declare type Resolvers<ContextType = any> = ResolversObject<{
     Book?: BookResolvers<ContextType>;

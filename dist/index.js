@@ -33,15 +33,13 @@ const graphQLFilter = async ({ filterMap, resolve, parent, args, context, info, 
                     context,
                     info,
                 })) {
-                    throw new graphql_1.GraphQLError('graphql-filter detected inconsistent by throw mode. ');
+                    throw new graphql_1.GraphQLError('graphql-filter detected inconsistent data by throw mode. ');
                 }
             }),
         }[filter.mode]();
     }
     return {
-        null: () => filter.function({ result, parent, args, context, info })
-            ? result
-            : null,
+        null: () => filter.function({ result, parent, args, context, info }) ? result : null,
         remove: () => {
             throw new graphql_1.GraphQLError("graphql-filter doesn't support remove mode not for array. ");
         },
@@ -53,7 +51,7 @@ const graphQLFilter = async ({ filterMap, resolve, parent, args, context, info, 
                 context,
                 info,
             })) {
-                throw new graphql_1.GraphQLError('graphql-filter detected inconsistent by throw mode. ');
+                throw new graphql_1.GraphQLError('graphql-filter detected inconsistent data by throw mode. ');
             }
         },
     }[filter.mode]();

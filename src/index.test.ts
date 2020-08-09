@@ -15,11 +15,12 @@ const typeDefs = gql`
   }
 
   type Query {
-    book(id: ID!): Book!
-    books: [Book!]!
-    manyBooks: [Book!]!
     nullableBook(id: ID!): Book
-    nullableBooks: [Book]!
+    book(id: ID!): Book!
+    nullableBooks: [Book]
+    books: [Book!]
+    strictBooks: [Book!]!
+    manyBooks: [Book!]
   }
 `;
 
@@ -30,6 +31,8 @@ const manyBooks: Book[] = [...Array(numberOfBooks).keys()].map((index) => ({
 
 const resolvers: Resolvers = {
   Query: {
+    nullableBook: (_, { id }) =>
+      manyBooks.find((book) => book.id === id) || null,
     book: (_, { id }) => {
       const book = manyBooks.find((book) => book.id === id);
 
@@ -39,11 +42,10 @@ const resolvers: Resolvers = {
 
       return book;
     },
-    books: () => manyBooks.slice(0, 2),
-    manyBooks: () => manyBooks,
-    nullableBook: (_, { id }) =>
-      manyBooks.find((book) => book.id === id) || null,
     nullableBooks: () => [...manyBooks.slice(0, 2), null],
+    books: () => manyBooks.slice(0, 2),
+    strictBooks: () => manyBooks.slice(0, 2),
+    manyBooks: () => manyBooks,
   },
 };
 
@@ -61,14 +63,19 @@ const filterMap: GraphQLFilterMap = {
     mode: 'throw',
     function: bookFilterFunction,
   },
-  '[Book]!': {
+  '[Book]': {
     // Replace private books in array to null.
     mode: 'null',
     function: bookFilterFunction,
   },
-  '[Book!]!': {
+  '[Book!]': {
     // Remove private books from array.
     mode: 'remove',
+    function: bookFilterFunction,
+  },
+  '[Book!]!': {
+    // Throw error with private books.
+    mode: 'throw',
     function: bookFilterFunction,
   },
 };
@@ -147,6 +154,21 @@ test('remove private books from array', async () => {
     query: gql`
       query {
         books {
+          id
+          private
+        }
+      }
+    `,
+  });
+
+  expect(response).toMatchSnapshot();
+});
+
+test('throw error with private books', async () => {
+  const response = await query({
+    query: gql`
+      query {
+        strictBooks {
           id
           private
         }

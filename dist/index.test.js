@@ -13,11 +13,12 @@ const typeDefs = apollo_server_1.gql `
   }
 
   type Query {
-    book(id: ID!): Book!
-    books: [Book!]!
-    manyBooks: [Book!]!
     nullableBook(id: ID!): Book
-    nullableBooks: [Book]!
+    book(id: ID!): Book!
+    nullableBooks: [Book]
+    books: [Book!]
+    strictBooks: [Book!]!
+    manyBooks: [Book!]
   }
 `;
 const manyBooks = [...Array(numberOfBooks).keys()].map((index) => ({
@@ -26,6 +27,7 @@ const manyBooks = [...Array(numberOfBooks).keys()].map((index) => ({
 }));
 const resolvers = {
     Query: {
+        nullableBook: (_, { id }) => manyBooks.find((book) => book.id === id) || null,
         book: (_, { id }) => {
             const book = manyBooks.find((book) => book.id === id);
             if (!book) {
@@ -33,10 +35,10 @@ const resolvers = {
             }
             return book;
         },
-        books: () => manyBooks.slice(0, 2),
-        manyBooks: () => manyBooks,
-        nullableBook: (_, { id }) => manyBooks.find((book) => book.id === id) || null,
         nullableBooks: () => [...manyBooks.slice(0, 2), null],
+        books: () => manyBooks.slice(0, 2),
+        strictBooks: () => manyBooks.slice(0, 2),
+        manyBooks: () => manyBooks,
     },
 };
 const bookFilterFunction = ({ result }) => result ? !result.private : false;
@@ -51,14 +53,19 @@ const filterMap = {
         mode: 'throw',
         function: bookFilterFunction,
     },
-    '[Book]!': {
+    '[Book]': {
         // Replace private books in array to null.
         mode: 'null',
         function: bookFilterFunction,
     },
-    '[Book!]!': {
+    '[Book!]': {
         // Remove private books from array.
         mode: 'remove',
+        function: bookFilterFunction,
+    },
+    '[Book!]!': {
+        // Throw error with private books.
+        mode: 'throw',
         function: bookFilterFunction,
     },
 };
@@ -124,6 +131,19 @@ test('remove private books from array', async () => {
         query: apollo_server_1.gql `
       query {
         books {
+          id
+          private
+        }
+      }
+    `,
+    });
+    expect(response).toMatchSnapshot();
+});
+test('throw error with private books', async () => {
+    const response = await query({
+        query: apollo_server_1.gql `
+      query {
+        strictBooks {
           id
           private
         }

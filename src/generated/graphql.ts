@@ -19,20 +19,21 @@ export type Book = {
 
 export type Query = {
   __typename?: 'Query';
-  book: Book;
-  books: Array<Book>;
-  manyBooks: Array<Book>;
   nullableBook?: Maybe<Book>;
-  nullableBooks: Array<Maybe<Book>>;
-};
-
-
-export type QueryBookArgs = {
-  id: Scalars['ID'];
+  book: Book;
+  nullableBooks?: Maybe<Array<Maybe<Book>>>;
+  books?: Maybe<Array<Book>>;
+  strictBooks: Array<Book>;
+  manyBooks?: Maybe<Array<Book>>;
 };
 
 
 export type QueryNullableBookArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryBookArgs = {
   id: Scalars['ID'];
 };
 
@@ -138,11 +139,12 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
-  books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
-  manyBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
   nullableBook?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryNullableBookArgs, 'id'>>;
-  nullableBooks?: Resolver<Array<Maybe<ResolversTypes['Book']>>, ParentType, ContextType>;
+  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
+  nullableBooks?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
+  books?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
+  strictBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
+  manyBooks?: Resolver<Maybe<Array<ResolversTypes['Book']>>, ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
