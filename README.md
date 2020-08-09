@@ -30,7 +30,7 @@ It may be able to implement flexible read control with [graphql-shield](https://
 
 ## Example
 
-Please see [test](https://github.com/hata6502/graphql-filter/blob/master/src/index.test.ts#L43)
+Please see [test](https://github.com/hata6502/graphql-filter/blob/master/src/index.test.ts)
 and [snapshots](https://github.com/hata6502/graphql-filter/blob/master/dist/__snapshots__/index.test.js.snap).
 
 ## Install

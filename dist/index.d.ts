@@ -1,4 +1,4 @@
-import type { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo } from 'graphql';
 import type { MergeInfo } from 'graphql-tools';
 export declare type GraphQLFilterFunction<Result = any, Parent = any, Context = any, Args = any> = (args: {
     result: Result | null;
@@ -8,7 +8,7 @@ export declare type GraphQLFilterFunction<Result = any, Parent = any, Context = 
     info: GraphQLResolveInfo;
 }) => boolean;
 interface GraphQLFilter {
-    mode: 'null' | 'remove';
+    mode: 'null' | 'remove' | 'throw';
     function: GraphQLFilterFunction;
 }
 export declare type GraphQLFilterMap = {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const graphql_1 = require("graphql");
 const graphQLFilter = async ({ filterMap, resolve, parent, args, context, info, }) => {
     const result = await resolve(parent, args, context, info);
     const filter = filterMap[info.returnType.toString()];
@@ -7,7 +8,7 @@ const graphQLFilter = async ({ filterMap, resolve, parent, args, context, info, 
         return result;
     }
     if (Array.isArray(result)) {
-        const modeFunctionMap = {
+        return {
             null: () => result.map((resultElement) => filter.function({
                 result: resultElement,
                 parent,
@@ -24,12 +25,38 @@ const graphQLFilter = async ({ filterMap, resolve, parent, args, context, info, 
                 context,
                 info,
             })),
-        };
-        return modeFunctionMap[filter.mode]();
+            throw: () => result.forEach((resultElement) => {
+                if (!filter.function({
+                    result: resultElement,
+                    parent,
+                    args,
+                    context,
+                    info,
+                })) {
+                    throw new graphql_1.GraphQLError('graphql-filter detected inconsistent by throw mode. ');
+                }
+            }),
+        }[filter.mode]();
     }
-    return filter.function({ result, parent, args, context, info })
-        ? result
-        : null;
+    return {
+        null: () => filter.function({ result, parent, args, context, info })
+            ? result
+            : null,
+        remove: () => {
+            throw new graphql_1.GraphQLError("graphql-filter doesn't support remove mode not for array. ");
+        },
+        throw: () => {
+            if (!filter.function({
+                result,
+                parent,
+                args,
+                context,
+                info,
+            })) {
+                throw new graphql_1.GraphQLError('graphql-filter detected inconsistent by throw mode. ');
+            }
+        },
+    }[filter.mode]();
 };
 exports.default = graphQLFilter;
 //# sourceMappingURL=index.js.map

@@ -1,4 +1,4 @@
-import type { GraphQLResolveInfo } from 'graphql';
+import { GraphQLError, GraphQLResolveInfo } from 'graphql';
 import type { MergeInfo } from 'graphql-tools';
 
 export type GraphQLFilterFunction<
@@ -15,7 +15,7 @@ export type GraphQLFilterFunction<
 }) => boolean;
 
 interface GraphQLFilter {
-  mode: 'null' | 'remove';
+  mode: 'null' | 'remove' | 'throw';
   function: GraphQLFilterFunction;
 }
 
@@ -51,7 +51,7 @@ const graphQLFilter = async <Parent = any, Context = any, Args = any>({
   }
 
   if (Array.isArray(result)) {
-    const modeFunctionMap = {
+    return {
       null: () =>
         result.map((resultElement) =>
           filter.function({
@@ -74,14 +74,49 @@ const graphQLFilter = async <Parent = any, Context = any, Args = any>({
             info,
           })
         ),
-    };
-
-    return modeFunctionMap[filter.mode]();
+      throw: () =>
+        result.forEach((resultElement) => {
+          if (
+            !filter.function({
+              result: resultElement,
+              parent,
+              args,
+              context,
+              info,
+            })
+          ) {
+            throw new GraphQLError(
+              'graphql-filter detected inconsistent data by throw mode. '
+            );
+          }
+        }),
+    }[filter.mode]();
   }
 
-  return filter.function({ result, parent, args, context, info })
-    ? result
-    : null;
+  return {
+    null: () =>
+      filter.function({ result, parent, args, context, info }) ? result : null,
+    remove: () => {
+      throw new GraphQLError(
+        "graphql-filter doesn't support remove mode not for array. "
+      );
+    },
+    throw: () => {
+      if (
+        !filter.function({
+          result,
+          parent,
+          args,
+          context,
+          info,
+        })
+      ) {
+        throw new GraphQLError(
+          'graphql-filter detected inconsistent data by throw mode. '
+        );
+      }
+    },
+  }[filter.mode]();
 };
 
 export default graphQLFilter;

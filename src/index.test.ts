@@ -1,5 +1,6 @@
 import { ApolloServer, gql, makeExecutableSchema } from 'apollo-server';
 import { createTestClient } from 'apollo-server-testing';
+import { GraphQLError } from 'graphql';
 import { applyMiddleware } from 'graphql-middleware';
 import graphQLFilter from '.';
 import type { GraphQLFilterFunction, GraphQLFilterMap } from '.';
@@ -14,6 +15,7 @@ const typeDefs = gql`
   }
 
   type Query {
+    book(id: ID!): Book!
     books: [Book!]!
     manyBooks: [Book!]!
     nullableBook(id: ID!): Book
@@ -28,6 +30,15 @@ const manyBooks: Book[] = [...Array(numberOfBooks).keys()].map((index) => ({
 
 const resolvers: Resolvers = {
   Query: {
+    book: (_, { id }) => {
+      const book = manyBooks.find((book) => book.id === id);
+
+      if (!book) {
+        throw new GraphQLError('Not found. ');
+      }
+
+      return book;
+    },
     books: () => manyBooks.slice(0, 2),
     manyBooks: () => manyBooks,
     nullableBook: (_, { id }) =>
@@ -43,6 +54,11 @@ const filterMap: GraphQLFilterMap = {
   Book: {
     // Replace private book to null.
     mode: 'null',
+    function: bookFilterFunction,
+  },
+  'Book!': {
+    // Throw error with private book.
+    mode: 'throw',
     function: bookFilterFunction,
   },
   '[Book]!': {
@@ -73,22 +89,7 @@ const schema = applyMiddleware(
 const server = new ApolloServer({ schema });
 const { query } = createTestClient(server);
 
-test('filter books', async () => {
-  const response = await query({
-    query: gql`
-      query {
-        books {
-          id
-          private
-        }
-      }
-    `,
-  });
-
-  expect(response).toMatchSnapshot();
-});
-
-test('filter nullableBook', async () => {
+test('replace private book to null', async () => {
   const response = await query({
     query: gql`
       query {
@@ -111,11 +112,41 @@ test('filter nullableBook', async () => {
   expect(response).toMatchSnapshot();
 });
 
-test('filter nullableBooks', async () => {
+test('throw error with private book', async () => {
+  const response = await query({
+    query: gql`
+      query {
+        book(id: 2) {
+          id
+          private
+        }
+      }
+    `,
+  });
+
+  expect(response).toMatchSnapshot();
+});
+
+test('replace private books in array to null', async () => {
   const response = await query({
     query: gql`
       query {
         nullableBooks {
+          id
+          private
+        }
+      }
+    `,
+  });
+
+  expect(response).toMatchSnapshot();
+});
+
+test('remove private books from array', async () => {
+  const response = await query({
+    query: gql`
+      query {
+        books {
           id
           private
         }

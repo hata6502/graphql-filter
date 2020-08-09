@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`filter books 1`] = `
+exports[`remove private books from array 1`] = `
 Object {
   "data": Object {
     "books": Array [
@@ -20,7 +20,7 @@ Object {
 }
 `;
 
-exports[`filter nullableBook 1`] = `
+exports[`replace private book to null 1`] = `
 Object {
   "data": Object {
     "book1": Object {
@@ -40,7 +40,7 @@ Object {
 }
 `;
 
-exports[`filter nullableBooks 1`] = `
+exports[`replace private books in array to null 1`] = `
 Object {
   "data": Object {
     "nullableBooks": Array [
@@ -53,6 +53,21 @@ Object {
     ],
   },
   "errors": undefined,
+  "extensions": undefined,
+  "http": Object {
+    "headers": Headers {
+      Symbol(map): Object {},
+    },
+  },
+}
+`;
+
+exports[`throw error with private book 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    [GraphQLError: graphql-filter detected inconsistent by throw mode. ],
+  ],
   "extensions": undefined,
   "http": Object {
     "headers": Headers {

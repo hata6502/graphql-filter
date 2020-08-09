@@ -19,10 +19,16 @@ export type Book = {
 
 export type Query = {
   __typename?: 'Query';
+  book: Book;
   books: Array<Book>;
   manyBooks: Array<Book>;
   nullableBook?: Maybe<Book>;
   nullableBooks: Array<Maybe<Book>>;
+};
+
+
+export type QueryBookArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -132,6 +138,7 @@ export type BookResolvers<ContextType = any, ParentType extends ResolversParentT
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  book?: Resolver<ResolversTypes['Book'], ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
   books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
   manyBooks?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
   nullableBook?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryNullableBookArgs, 'id'>>;
