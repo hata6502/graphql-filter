@@ -74,7 +74,7 @@ const filterMap: GraphQLFilterMap = {
     function: bookFilterFunction,
   },
   '[Book!]!': {
-    // Throw error with private books.
+    // Throw error with private books in array.
     mode: 'throw',
     function: bookFilterFunction,
   },
@@ -164,7 +164,7 @@ test('remove private books from array', async () => {
   expect(response).toMatchSnapshot();
 });
 
-test('throw error with private books', async () => {
+test('throw error with private books in array', async () => {
   const response = await query({
     query: gql`
       query {
