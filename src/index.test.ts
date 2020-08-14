@@ -97,7 +97,7 @@ const server = new ApolloServer({ schema });
 const { query } = createTestClient(server);
 
 test('replace private book to null', async () => {
-  const response = await query({
+  const { data } = await query({
     query: gql`
       query {
         book1: nullableBook(id: 1) {
@@ -116,11 +116,11 @@ test('replace private book to null', async () => {
     `,
   });
 
-  expect(response).toMatchSnapshot();
+  expect(data).toMatchSnapshot();
 });
 
 test('throw error with private book', async () => {
-  const response = await query({
+  const { errors } = await query({
     query: gql`
       query {
         book(id: 2) {
@@ -131,11 +131,11 @@ test('throw error with private book', async () => {
     `,
   });
 
-  expect(response).toMatchSnapshot();
+  expect(errors).toMatchSnapshot();
 });
 
 test('replace private books in array to null', async () => {
-  const response = await query({
+  const { data } = await query({
     query: gql`
       query {
         nullableBooks {
@@ -146,11 +146,11 @@ test('replace private books in array to null', async () => {
     `,
   });
 
-  expect(response).toMatchSnapshot();
+  expect(data).toMatchSnapshot();
 });
 
 test('remove private books from array', async () => {
-  const response = await query({
+  const { data } = await query({
     query: gql`
       query {
         books {
@@ -161,11 +161,11 @@ test('remove private books from array', async () => {
     `,
   });
 
-  expect(response).toMatchSnapshot();
+  expect(data).toMatchSnapshot();
 });
 
 test('throw error with private books in array', async () => {
-  const response = await query({
+  const { errors } = await query({
     query: gql`
       query {
         strictBooks {
@@ -176,7 +176,7 @@ test('throw error with private books in array', async () => {
     `,
   });
 
-  expect(response).toMatchSnapshot();
+  expect(errors).toMatchSnapshot();
 });
 
 test(`performance test with ${numberOfBooks} books`, async () =>

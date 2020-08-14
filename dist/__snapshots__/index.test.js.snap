@@ -2,92 +2,47 @@
 
 exports[`remove private books from array 1`] = `
 Object {
-  "data": Object {
-    "books": Array [
-      Object {
-        "id": "1",
-        "private": false,
-      },
-    ],
-  },
-  "errors": undefined,
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
+  "books": Array [
+    Object {
+      "id": "1",
+      "private": false,
     },
-  },
+  ],
 }
 `;
 
 exports[`replace private book to null 1`] = `
 Object {
-  "data": Object {
-    "book1": Object {
-      "id": "1",
-      "private": false,
-    },
-    "book2": null,
-    "notExistedBook": null,
+  "book1": Object {
+    "id": "1",
+    "private": false,
   },
-  "errors": undefined,
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
-    },
-  },
+  "book2": null,
+  "notExistedBook": null,
 }
 `;
 
 exports[`replace private books in array to null 1`] = `
 Object {
-  "data": Object {
-    "nullableBooks": Array [
-      Object {
-        "id": "1",
-        "private": false,
-      },
-      null,
-      null,
-    ],
-  },
-  "errors": undefined,
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
+  "nullableBooks": Array [
+    Object {
+      "id": "1",
+      "private": false,
     },
-  },
+    null,
+    null,
+  ],
 }
 `;
 
 exports[`throw error with private book 1`] = `
-Object {
-  "data": null,
-  "errors": Array [
-    [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
-  ],
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
-    },
-  },
-}
+Array [
+  [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
+]
 `;
 
-exports[`throw error with private books 1`] = `
-Object {
-  "data": null,
-  "errors": Array [
-    [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
-  ],
-  "extensions": undefined,
-  "http": Object {
-    "headers": Headers {
-      Symbol(map): Object {},
-    },
-  },
-}
+exports[`throw error with private books in array 1`] = `
+Array [
+  [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
+]
 `;

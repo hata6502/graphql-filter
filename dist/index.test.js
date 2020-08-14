@@ -64,7 +64,7 @@ const filterMap = {
         function: bookFilterFunction,
     },
     '[Book!]!': {
-        // Throw error with private books.
+        // Throw error with private books in array.
         mode: 'throw',
         function: bookFilterFunction,
     },
@@ -80,7 +80,7 @@ const schema = graphql_middleware_1.applyMiddleware(apollo_server_1.makeExecutab
 const server = new apollo_server_1.ApolloServer({ schema });
 const { query } = apollo_server_testing_1.createTestClient(server);
 test('replace private book to null', async () => {
-    const response = await query({
+    const { data } = await query({
         query: apollo_server_1.gql `
       query {
         book1: nullableBook(id: 1) {
@@ -98,10 +98,10 @@ test('replace private book to null', async () => {
       }
     `,
     });
-    expect(response).toMatchSnapshot();
+    expect(data).toMatchSnapshot();
 });
 test('throw error with private book', async () => {
-    const response = await query({
+    const { errors } = await query({
         query: apollo_server_1.gql `
       query {
         book(id: 2) {
@@ -111,10 +111,10 @@ test('throw error with private book', async () => {
       }
     `,
     });
-    expect(response).toMatchSnapshot();
+    expect(errors).toMatchSnapshot();
 });
 test('replace private books in array to null', async () => {
-    const response = await query({
+    const { data } = await query({
         query: apollo_server_1.gql `
       query {
         nullableBooks {
@@ -124,10 +124,10 @@ test('replace private books in array to null', async () => {
       }
     `,
     });
-    expect(response).toMatchSnapshot();
+    expect(data).toMatchSnapshot();
 });
 test('remove private books from array', async () => {
-    const response = await query({
+    const { data } = await query({
         query: apollo_server_1.gql `
       query {
         books {
@@ -137,10 +137,10 @@ test('remove private books from array', async () => {
       }
     `,
     });
-    expect(response).toMatchSnapshot();
+    expect(data).toMatchSnapshot();
 });
-test('throw error with private books', async () => {
-    const response = await query({
+test('throw error with private books in array', async () => {
+    const { errors } = await query({
         query: apollo_server_1.gql `
       query {
         strictBooks {
@@ -150,7 +150,7 @@ test('throw error with private books', async () => {
       }
     `,
     });
-    expect(response).toMatchSnapshot();
+    expect(errors).toMatchSnapshot();
 });
 test(`performance test with ${numberOfBooks} books`, async () => query({
     query: apollo_server_1.gql `
