@@ -1,4 +1,7 @@
-<h1 align="center">Welcome to graphql-filter 👋</h1>
+<div align="center">
+  <img alt="" src="graphql-filter.svg" width="192" />
+  <h1>Welcome to graphql-filter 👋</h1>
+</div>
 <p>
   <a href="https://www.npmjs.com/package/graphql-filter" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/graphql-filter.svg">
@@ -27,7 +30,7 @@
 When implementing a GraphQL API, you may want to filter the output.
 Another layer should be used especially if the reason is due to settings or privacy.
 graphql-filter provides comprehensive filtering by GraphQL Types.
-It may be able to implement flexible read control with [graphql-shield](https://github.com/maticzav/graphql-shield) and graphql-filter.
+It may be able to implement flexible read control with graphql-filter and [graphql-shield](https://github.com/maticzav/graphql-shield).
 
 ## Example
 
