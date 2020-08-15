@@ -40,9 +40,3 @@ Array [
   [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
 ]
 `;
-
-exports[`throw error with private books in array 1`] = `
-Array [
-  [GraphQLError: graphql-filter detected inconsistent data by throw mode. ],
-]
-`;
