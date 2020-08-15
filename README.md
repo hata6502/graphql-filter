@@ -1,7 +1,7 @@
-<div align="center">
-  <img alt="" src="graphql-filter.svg" width="192" />
-  <h1>Welcome to graphql-filter 👋</h1>
-</div>
+<h1 align="center">
+  <img alt="" src="graphql-filter.svg" width="192" /><br />
+  Welcome to graphql-filter 👋
+</h1>
 <p>
   <a href="https://www.npmjs.com/package/graphql-filter" target="_blank">
     <img alt="Version" src="https://img.shields.io/npm/v/graphql-filter.svg">
