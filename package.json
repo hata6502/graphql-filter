@@ -1,6 +1,6 @@
 {
   "name": "graphql-filter",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "A GraphQL middleware to filter output data. ",
   "keywords": [
     "graphql",
@@ -11,6 +11,9 @@
   "license": "MIT",
   "author": "hata6502",
   "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "codegen": "graphql-codegen --config codegen.yml",
     "fix": "prettier --write .",
